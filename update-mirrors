@@ -1,0 +1,54 @@
+#!/bin/bash
+
+# Changeable options
+url="https://www.archlinux.org/mirrorlist"
+countries=("BE" "NL")
+protocols=("http" "https")
+ip_versions=(4)
+dest="/etc/pacman.d/mirrorlist"
+
+# Functions
+function fold () { /usr/bin/fold --spaces --width=$(tput cols); }
+
+function _urlify-1 ()
+{
+    local items=($@)
+    for item in "${items[@]:1}"; do
+        echo "$1=${item}"
+    done
+}
+
+function urlify ()
+{
+    local uitems=($(_urlify-1 $@))
+    local IFS="&"
+    echo "${uitems[*]}"
+}
+
+function make-url ()
+{
+    local countryparams=$(urlify country ${countries[@]})
+    local protocolparams=$(urlify protocol ${protocols[@]})
+    local ipparams=$(urlify ip_version ${ip_versions[@]})
+
+    echo "${url}/?${countryparams}&${protocolparams}&${ipparams}"
+}
+
+# Load config file
+cfgfile=${XDG_CONFIG_HOME:-"${HOME}/.config"}/update-mirrors/config.sh
+[ -x $cfgfile ] && source $cfgfile
+
+# Check destination
+if [[ ! -e "$dest" ]] && [[ ! -w "$(dirname "$dest")" ]]; then
+    echo "Need write permission for $(dirname "$dest") to create \
+${dest}. Perhaps you should use sudo." | fold >&2
+    exit 1
+elif [[ -e "$dest" ]] && [[ ! -w "$dest" ]]; then
+    echo "Need write permission for ${dest}, perhaps you should use \
+sudo." | fold >&2
+    exit 1
+fi
+
+# Download, ready, output
+curl -s "$(make-url)" | sed 's/^#\([^#].*\)/\1/' > "$dest"
+echo "Saved in ${dest}"
