@@ -52,3 +52,8 @@ fi
 # Download, ready, output
 curl -s "$(make-url)" | sed 's/^#\([^#].*\)/\1/' > "$dest"
 echo "Saved in ${dest}"
+
+if [[ -f "${dest}.pacnew" ]]; then
+    rm "${dest}.pacnew"
+    echo "Removed ${dest}.pacnew"
+fi
