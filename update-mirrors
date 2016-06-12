@@ -5,6 +5,7 @@ url="https://www.archlinux.org/mirrorlist"
 countries=("BE" "NL")
 protocols=("http" "https")
 ip_versions=(4)
+use_mirror_status="on"
 dest="/etc/pacman.d/mirrorlist"
 
 # Functions
@@ -30,8 +31,9 @@ function make-url ()
     local countryparams=$(urlify country ${countries[@]})
     local protocolparams=$(urlify protocol ${protocols[@]})
     local ipparams=$(urlify ip_version ${ip_versions[@]})
+    local statusparams=$(urlify use_mirror_status $use_mirror_status)
 
-    echo "${url}/?${countryparams}&${protocolparams}&${ipparams}"
+    echo "${url}/?${countryparams}&${protocolparams}&${ipparams}&${statusparams}"
 }
 
 # Load config file
