@@ -1,13 +1,5 @@
 #!/bin/bash
 
-# Changeable options
-url="https://www.archlinux.org/mirrorlist"
-countries=("BE" "NL")
-protocols=("http" "https")
-ip_versions=(4)
-use_mirror_status="on"
-dest="/etc/pacman.d/mirrorlist"
-
 # Functions
 function fold () { /usr/bin/fold --spaces --width=$(tput cols); }
 
