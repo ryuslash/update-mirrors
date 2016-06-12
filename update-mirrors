@@ -36,9 +36,29 @@ function make-url ()
     echo "${url}/?${countryparams}&${protocolparams}&${ipparams}&${statusparams}"
 }
 
+function load-global-config ()
+{
+    local IFS=":"
+
+    for dir in $1; do
+        local cfgfile="${dir}${2}"
+        if [[ -x $cfgfile ]]; then
+            source $cfgfile
+            return
+        fi
+    done
+}
+
 # Load config file
-cfgfile=${XDG_CONFIG_HOME:-"${HOME}/.config"}/update-mirrors/config.sh
-[ -x $cfgfile ] && source $cfgfile
+etcbases=${XDG_CONFIG_DIRS:-"/etc/xdg"}
+cfgbase=${XDG_CONFIG_HOME:-"${HOME}/.config"}
+cfgfile="/update-mirrors/config.sh"
+
+if [[ -x $cfgfile ]]; then
+    source "${cfgbase}${cfgfile}"
+else
+    load-global-config $etcbases $cfgfile
+fi
 
 # Check destination
 if [[ ! -e "$dest" ]] && [[ ! -w "$(dirname "$dest")" ]]; then
