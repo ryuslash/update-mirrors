@@ -1,0 +1,10 @@
+[Trigger]
+Operation = Install
+Operation = Upgrade
+Type = Package
+Target = pacman-mirrorlist
+
+[Action]
+Description = Update mirrorlist and cleanup .pacnew
+When = PostTransaction
+Exec = /usr/bin/update-mirrors
