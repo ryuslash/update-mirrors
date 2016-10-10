@@ -46,7 +46,7 @@ etcbases=${XDG_CONFIG_DIRS:-"/etc/xdg"}
 cfgbase=${XDG_CONFIG_HOME:-"${HOME}/.config"}
 cfgfile="/update-mirrors/config.sh"
 
-if [[ -x $cfgfile ]]; then
+if [[ -x "${cfgbase}${cfgfile}" ]]; then
     source "${cfgbase}${cfgfile}"
 else
     load-global-config $etcbases $cfgfile
