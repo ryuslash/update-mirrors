@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Functions
-function fold () { /usr/bin/fold --spaces --width=$(tput cols); }
+function fold () { /usr/bin/fold --spaces --width="$(tput cols)"; }
 
 function _urlify-1 ()
 {
@@ -13,17 +13,22 @@ function _urlify-1 ()
 
 function urlify ()
 {
-    local uitems=($(_urlify-1 $@))
+    local uitems=($(_urlify-1 "$@"))
     local IFS="&"
     echo "${uitems[*]}"
 }
 
 function make-url ()
 {
-    local countryparams=$(urlify country ${countries[@]})
-    local protocolparams=$(urlify protocol ${protocols[@]})
-    local ipparams=$(urlify ip_version ${ip_versions[@]})
-    local statusparams=$(urlify use_mirror_status $use_mirror_status)
+    local countryparams
+    local protocolparams
+    local ipparams
+    local statusparams
+
+    countryparams=$(urlify country "${countries[@]}")
+    protocolparams=$(urlify protocol "${protocols[@]}")
+    ipparams=$(urlify ip_version "${ip_versions[@]}")
+    statusparams=$(urlify use_mirror_status "$use_mirror_status")
 
     echo "${url}/?${countryparams}&${protocolparams}&${ipparams}&${statusparams}"
 }
@@ -35,7 +40,7 @@ function load-global-config ()
     for dir in $1; do
         local cfgfile="${dir}${2}"
         if [[ -x $cfgfile ]]; then
-            source $cfgfile
+            source "$cfgfile"
             return
         fi
     done
@@ -49,7 +54,7 @@ cfgfile="/update-mirrors/config.sh"
 if [[ -x "${cfgbase}${cfgfile}" ]]; then
     source "${cfgbase}${cfgfile}"
 else
-    load-global-config $etcbases $cfgfile
+    load-global-config "$etcbases" $cfgfile
 fi
 
 # Check destination
