@@ -69,7 +69,7 @@ sudo." | fold >&2
 fi
 
 # Download, ready, output
-curl -s "$(make-url)" | sed 's/^#\([^#].*\)/\1/' > "$dest"
+curl -s -L "$(make-url)" | sed 's/^#\([^#].*\)/\1/' > "$dest"
 echo "Saved in ${dest}"
 
 if [[ -f "${dest}.pacnew" ]]; then
