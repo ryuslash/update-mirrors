@@ -1,25 +1,22 @@
 #!/bin/bash
 
 # Functions
-function fold () { /usr/bin/fold --spaces --width="$(tput cols)"; }
+function fold() { /usr/bin/fold --spaces --width="$(tput cols)"; }
 
-function _urlify-1 ()
-{
+function _urlify-1() {
     local items=($@)
     for item in "${items[@]:1}"; do
         echo "$1=${item}"
     done
 }
 
-function urlify ()
-{
+function urlify() {
     local uitems=($(_urlify-1 "$@"))
     local IFS="&"
     echo "${uitems[*]}"
 }
 
-function make-url ()
-{
+function make-url() {
     local countryparams
     local protocolparams
     local ipparams
@@ -33,8 +30,7 @@ function make-url ()
     echo "${url}/?${countryparams}&${protocolparams}&${ipparams}&${statusparams}"
 }
 
-function load-global-config ()
-{
+function load-global-config() {
     local IFS=":"
 
     for dir in $1; do
@@ -58,11 +54,11 @@ else
 fi
 
 # Check destination
-if [[ ! -e "$dest" ]] && [[ ! -w "$(dirname "$dest")" ]]; then
+if [[ ! -e $dest ]] && [[ ! -w "$(dirname "$dest")" ]]; then
     echo "Need write permission for $(dirname "$dest") to create \
 ${dest}. Perhaps you should use sudo." | fold >&2
     exit 1
-elif [[ -e "$dest" ]] && [[ ! -w "$dest" ]]; then
+elif [[ -e $dest ]] && [[ ! -w $dest ]]; then
     echo "Need write permission for ${dest}, perhaps you should use \
 sudo." | fold >&2
     exit 1
