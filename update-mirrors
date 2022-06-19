@@ -65,7 +65,7 @@ sudo." | fold >&2
 fi
 
 # Download, ready, output
-mirrorlist=$(curl --no-progress-meter -L "$(make-url)")
+mirrorlist=$(curl --no-progress-meter --location "$(make-url)")
 
 if [[ $? -eq 0 ]]; then
     echo "$mirrorlist" | sed 's/^#\([^#].*\)/\1/' > "$dest"
