@@ -65,8 +65,14 @@ sudo." | fold >&2
 fi
 
 # Download, ready, output
-curl -s -L "$(make-url)" | sed 's/^#\([^#].*\)/\1/' > "$dest"
-echo "Saved in ${dest}"
+mirrorlist=$(curl -s -L "$(make-url)")
+
+if [[ $? -eq 0 ]]; then
+    echo "$mirrorlist" | sed 's/^#\([^#].*\)/\1/' > "$dest"
+    echo "Saved in ${dest}"
+else
+    echo "Couldn't load mirrorlist, not updating."
+fi
 
 if [[ -f "${dest}.pacnew" ]]; then
     rm "${dest}.pacnew"
