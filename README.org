@@ -1,0 +1,24 @@
+#+title: update-mirrors
+
+This is a simple utility for [[https://archlinux.org/][archlinux]] that keeps the mirror list up-to-date.
+
+Whenever the =pacman-mirrorlist= updates it's always a pain to have to pick out which servers exactly you want. And the archlinux project provides a nice [[https://archlinux.org/mirrorlist/][Pacman Mirrorlist Generator]]. This utility uses that generator to automatically update the mirror list every time =pacman-mirrorlist= is updated.
+
+* Installation
+
+I've provided a =PKGBUILD= through which it can be installed:
+
+: makepkg -sic
+
+It will install the executable, configuration file, and pacman hook into the proper locations so that after it will always be called automatically.
+
+* Configuration
+
+There are a few configuration options. The configuration file is just a regular shell script sourced by the =update-mirrors= script.
+
+- =url= :: A string. The base URL for archlinux's mirrorlist generator. You probably don't have to change this.
+- =countries= :: An array of strings. Which countries you want to include mirrors from. You will probably want to change this.
+- =protocols= :: An array of strings. Which protocols to include. Available protocols are =http= and =https=.
+- =ip_versions= :: An array of numbers. Which IP versions to include in the mirrorlist. Available versions are =4= and =6=.
+- =use_mirror_status= :: The string “on” or empty. Turning this on will make the generator filter the list of mirrors by the mirror score from the [[https://archlinux.org/mirrors/status/][Mirror Status]] page.
+- =dest= :: A string, a file path. Where to write the result to. You probably don't have to change this.
