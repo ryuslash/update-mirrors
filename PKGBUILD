@@ -8,7 +8,7 @@ license=('GPL3')
 depends=('curl')
 source=('config.sh' 'update-mirrors' 'update-mirrors.hook')
 md5sums=('f346650dfe6e27c04857fe818e164981'
-         'afe72175656611b9db7a225a79c01284'
+         'c2743e2e0d571c12a23962e50784caad'
          'da17120353c50b53f7478f72bbac04e8')
 backup=('etc/xdg/update-mirrors/config.sh')
 
