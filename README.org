@@ -12,6 +12,20 @@ I've provided a =PKGBUILD= through which it can be installed:
 
 It will install the executable, configuration file, and pacman hook into the proper locations so that after it will always be called automatically.
 
+You can also install it by adding my repository:
+
+#+begin_src conf-unix
+  [ryuslash]
+  SigLevel = Optional TrustAll
+  Server = https://ryuslash.org/repo/x86_64
+#+end_src
+
+And then run =pacman -Sy update-mirrors= to install it.
+
+#+begin_note
+Note that my repository currently isn't signed, plus I'm just a random guy on the internet. I don't expect anyone to actually use this, but if you do, do so with caution and at your own risk.
+#+end_note
+
 * Configuration
 
 There are a few configuration options. The configuration file is just a regular shell script sourced by the =update-mirrors= script.
